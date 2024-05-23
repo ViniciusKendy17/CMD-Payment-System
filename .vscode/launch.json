@@ -11,7 +11,7 @@
       "cwd": "c:/Users/vinic/OneDrive/Documents/GitHub/CMD-Payment-System",
       "program": "c:/Users/vinic/OneDrive/Documents/GitHub/CMD-Payment-System/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+      "miDebuggerPath": "gdb",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
