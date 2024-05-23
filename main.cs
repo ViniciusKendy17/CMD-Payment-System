@@ -1,4 +1,4 @@
-  // See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 using System;
 
 class Program
@@ -8,7 +8,12 @@ class Program
     static string cpf = "882.234.666-33";
     static string contatype = "Corrente";
 
-    enum Metodos {Pix, Ted, Voucher, Cartão};   
+    static bool useVoucher = false;
+    static float valorTotal;
+    static float valor;
+
+    enum Metodos {Pix, Ted, Voucher, Cartão}; 
+    enum Vouchers {v1 = 5, v2 = 10, v3 = 20};
 
     static void ShowRecibo(float valorTotal, Metodos type)
     {
@@ -19,6 +24,7 @@ class Program
         Console.WriteLine($"CPF do pagante: {cpf}");
         Console.WriteLine($"Tipo de pagamento: {type}");
         Console.WriteLine($"Tipo de conta: {contatype}");
+        Console.WriteLine($"Voucher: {useVoucher}");
         Console.WriteLine($"Valor total: R${valorTotal}");
         Console.WriteLine("");
     }
@@ -29,9 +35,8 @@ class Program
         Console.WriteLine("Selecione o tipo de pagamento para concluirmos a sua compra !!");
         Console.WriteLine("1. Pix");
         Console.WriteLine("2. Transferencia");
-        Console.WriteLine("3. Voucher");
-        Console.WriteLine("4. Cartão");
-        Console.WriteLine("5. Sair");
+        Console.WriteLine("3. Cartão");
+        Console.WriteLine("4. Sair");
     }
 
     static void Validation()
@@ -76,12 +81,6 @@ class Program
         ShowRecibo(valorTotal, type);
     }
 
-    static void VoucherPayment(float valorTotal)
-    {
-        Console.WriteLine($"Digite o código do voucher para realizar o pagamento no valor de R${valorTotal:F2}");
-        // Lógica para pagamento com voucher
-    }
-
     static void CartaoPayment(float valorTotal)
     {
         Metodos type = Metodos.Cartão;
@@ -89,7 +88,7 @@ class Program
         ShowRecibo(valorTotal, type);
 
     }
-    static float valorTotal;
+    
     static void Main()
     {
         int opcao;
@@ -100,6 +99,42 @@ class Program
 
             Console.WriteLine("Coloque o valor total de suas compras: R$");
             valorTotal = float.Parse(Console.ReadLine());
+
+            Console.WriteLine("Deseja usar um voucher ? [1]Sim e [2]Não");
+            int resp = Convert.ToInt16(Console.ReadLine());
+
+            if (resp == 1)
+            {
+                useVoucher = true;
+                Console.WriteLine("Selecione um dos vouchers disponiveis:");
+                Console.WriteLine("[1]v1 - 5% de desconto");
+                Console.WriteLine("[2]v2 - 10% de desconto");
+                Console.WriteLine("[3]v3 - 20% de desconto");
+
+                int vouchernum = Convert.ToInt16(Console.ReadLine());
+
+
+                switch (vouchernum)
+                {
+                    case 1:
+                        valorTotal  = (valorTotal) - (valorTotal/100 * 5);
+                        Console.WriteLine($"Novo valor: {valorTotal}");
+                        break;
+                    case 2:
+                        valorTotal = (valorTotal) - (valorTotal / 100 * 10);
+                        Console.WriteLine($"Novo valor: {valorTotal}");
+                        break;
+                    case 3:
+                        valorTotal = (valorTotal) - (valorTotal / 100 * 20);
+                        Console.WriteLine($"Novo valor: {valorTotal}");
+                        break;
+                }
+                    
+            }
+            else
+            {
+                valorTotal = valorTotal;
+            }
 
             TextIntro();
             opcao = int.Parse(Console.ReadLine());
@@ -113,12 +148,9 @@ class Program
                     TransferenciaPayment(valorTotal);
                     break;
                 case 3:
-                    VoucherPayment(valorTotal);
-                    break;
-                case 4:
                     CartaoPayment(valorTotal);
                     break;
-                case 5:
+                case 4:
                     Console.WriteLine("Encerrando o programa.");
                     break;
                 default:
